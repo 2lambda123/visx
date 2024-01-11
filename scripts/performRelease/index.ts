@@ -6,6 +6,7 @@ import fetchTags from './fetchTags';
 import getGitHubClient from '../utils/getGitHubClient';
 import performLernaRelease from './performLernaRelease';
 import postReleaseOnPrs from './postReleaseOnPrs';
+import { handleError } from '../utils/errorHandler';
 import updateChangelog from './updateChangelog';
 import createGithubRelease from './createGithubRelease';
 /**
@@ -98,7 +99,11 @@ async function performRelease() {
 
   // post release version on all PRs since last non-alpha release to inform authors
   // this will double post on alpha PRs (which is desired)
-  await postReleaseOnPrs(client, prsSinceLastNonAlphaTag, newTag.name);
+  try {
+    await postReleaseOnPrs(client, prsSinceLastNonAlphaTag, newTag.name);
+  } catch (error) {
+    handleError('Error posting release on PRs:', error);
+  }
 }
 
 performRelease().catch((error) => {
