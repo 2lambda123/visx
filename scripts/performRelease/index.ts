@@ -20,10 +20,15 @@ async function performRelease() {
 
   console.log('Running release script');
 
-  // fetch most recent alpha + non-alpha tags
+  try {
+    // fetch most recent alpha + non-alpha tags
   // this allows posting on PRs for the alpha / non-alpha release
   // while only using PRs since the last (alpha or non-alpha) tag to dictate the next release version
   const tagsRequest = await fetchTags(client); // sorted new => old
+  } catch (error) {
+    console.error('Error fetching recent tags:', error.message);
+    process.exit(1);
+  }
   const mostRecentTag = tagsRequest.data[0];
   const mostRecentNonAlphaTag = tagsRequest.data.find((tag) => !tag.name.includes('alpha'));
 
