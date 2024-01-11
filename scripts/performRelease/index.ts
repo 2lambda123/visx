@@ -87,7 +87,12 @@ async function performRelease() {
   // update changelog + create Github release only for non-alpha releases
   // include all PRs since last non-alpha release
   if (!isPreRelease) {
+    try {
     await updateChangelog(prsSinceLastNonAlphaTag, newTag.name);
+  } catch (error) {
+    console.error('Error updating changelog:', error);
+    // Additional error handling and validation
+  }
     await createGithubRelease(client, prsSinceLastNonAlphaTag, newTag.name);
   }
 
