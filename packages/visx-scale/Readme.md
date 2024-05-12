@@ -4,7 +4,14 @@
   <img src="https://img.shields.io/npm/dm/@visx/scale.svg?style=flat-square" />
 </a>
 
-## Installation
+## Error Handling
+```javascript
+try {
+  // Existing code snippet
+} catch (err) {
+  console.error('Error during GitHub Actions run: ', err.message);
+}
+```
 
 ```sh
 npm install --save @visx/scale
